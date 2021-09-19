@@ -20,7 +20,7 @@ class Monitor {
 
     constructor(){
         // initialize variables
-        this.api_link = "http://localhost:8881/get_hist_data";
+        this.api_link = "";
         this.img_data = null;
         this.is_reload = false;
         this.delay = 1; // [second]
