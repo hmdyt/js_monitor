@@ -20,7 +20,7 @@ class Monitor {
 
     constructor(){
         // initialize variables
-        this.api_link = null;
+        this.api_link = "http://localhost:8881/get_hist_data";
         this.img_data = null;
         this.is_reload = false;
         this.delay = 1; // [second]
@@ -37,7 +37,7 @@ class Monitor {
     }
 
     fetch_img_data(){
-        axios.get(String(this.api_link))
+        axios.get(this.api_link)
             .then(response => {
                 this.img_data = response.data.img_base64;
                 this.set_last_reloaded_time();
@@ -53,7 +53,7 @@ class Monitor {
     begin_reloading(){
         this.is_reload = true;
         this.stop_reloading();
-        this.timer_id = window.setInterval(this.fetch_img_data, Number(this.delay) * 1000);
+        this.timer_id = window.setInterval(this.fetch_img_data.bind(this), Number(this.delay) * 1000);
     }
 
 }
@@ -61,7 +61,9 @@ class Monitor {
 var app = new Vue({
     el: '#app',
     data: {
-        monitors: []
+        monitors: [],
+        n_cols: 2,
+        is_hide_propaties: false,
     },
 
     methods: {
@@ -72,12 +74,7 @@ var app = new Vue({
         },
 
         delete_monitor: function(index){
-            if (this.monitors.length == 1){
-                alert("cannot delete all monitors");
-                return null;
-            } else {
-                this.monitors.splice(index, 1);
-            }
+            this.monitors.splice(index, 1);
         },
     },
 

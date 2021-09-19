@@ -18,15 +18,40 @@
 <div id="app">
     <div class="container">
         
-        <button @click="add_monitor()">add</button>
+        <p>
+            <button class="btn btn-primary" @click="add_monitor()">add</button><br>
+            <div>
+                a row
+                <select v-model="n_cols">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>6</option>
+                    <option>12</option>
+                </select>
+                graphs
+            <div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" v-model="is_hide_propaties" id="hideprop">
+                <label class="form-check-label" for="hideprop">
+                    hide properties
+                </label>
+            </div>
+        </p>
         <div class="row">
-            <div class="col-6 " v-for="i in monitors.length">
-                {{ monitors[i-1].last_reloaded_datetime }}
-                {{ monitors[i-1].api_link }}
-                <button @click="delete_monitor(i-1)">delete</button>
-                <button @click="monitors[i-1].begin_reloading()">start</button>
-                <button @click="monitors[i-1].stop_reloading()">stop</button>
-                <input type="text" v-model="monitors[i-1].api_link">
+            <div :class="'col-' + String(12 / n_cols) + ' card'" v-for="i in monitors.length">
+                <img class="img-fluid" :src="monitors[i-1].img_data">
+                <div class="input-group mb-3" v-show="!(is_hide_propaties)">
+                    <input type="tel" v-model="monitors[i-1].delay" v-on:keydown.enter="monitors[i-1].begin_reloading()" class="form-control" placeholder="reload interval [second]">
+                    <span class="input-group-text">{{ monitors[i-1].last_reloaded_datetime }}</span>
+                    <button class="btn btn-outline-primary" @click="monitors[i-1].begin_reloading()" type="button">Start</button>
+                    <button class="btn btn-outline-secondary" @click="monitors[i-1].stop_reloading()" type="button">Stop</button>
+                </div>
+                <div class="input-group mb-3" v-show="!(is_hide_propaties)">
+                    <input type="text" v-model="monitors[i-1].api_link" v-on:keydown.enter="monitors[i-1].begin_reloading()" class="form-control" placeholder="API Link">
+                    <button class="btn btn-outline-danger" @click="delete_monitor(i-1)">delete</button>
+                </div>
             </div>
         </div>
     </div>
