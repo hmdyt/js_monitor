@@ -51,8 +51,8 @@ class Monitor {
     }
 
     begin_reloading(){
-        this.is_reload = true;
         this.stop_reloading();
+        this.is_reload = true;
         this.timer_id = window.setInterval(this.fetch_img_data.bind(this), Number(this.delay) * 1000);
     }
 

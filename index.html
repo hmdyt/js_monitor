@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
@@ -19,7 +20,7 @@
     <div class="container">
         
         <p>
-            <button class="btn btn-primary" @click="add_monitor()">add</button><br>
+            <button class="btn btn-primary" @click="add_monitor()"><i class="fas fa-plus"></i></button><br>
             <div>
                 a row
                 <select v-model="n_cols">
@@ -30,7 +31,7 @@
                     <option>6</option>
                     <option>12</option>
                 </select>
-                graphs
+                images
             <div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" v-model="is_hide_propaties" id="hideprop">
@@ -43,14 +44,14 @@
             <div :class="'col-' + String(12 / n_cols) + ' card'" v-for="i in monitors.length">
                 <img class="img-fluid" :src="monitors[i-1].img_data">
                 <div class="input-group mb-3" v-show="!(is_hide_propaties)">
-                    <input type="tel" v-model="monitors[i-1].delay" v-on:keydown.enter="monitors[i-1].begin_reloading()" class="form-control" placeholder="reload interval [second]">
-                    <span class="input-group-text">{{ monitors[i-1].last_reloaded_datetime }}</span>
-                    <button class="btn btn-outline-primary" @click="monitors[i-1].begin_reloading()" @touchstart="monitors[i-1].begin_reloading()" type="button">Start</button>
-                    <button class="btn btn-outline-secondary" @click="monitors[i-1].stop_reloading()" @touchstart="monitors[i-1].stop_reloading()" type="button">Stop</button>
+                    <input type="text" v-model="monitors[i-1].api_link" v-on:keydown.enter="monitors[i-1].begin_reloading()" class="form-control" placeholder="API Link">
                 </div>
                 <div class="input-group mb-3" v-show="!(is_hide_propaties)">
-                    <input type="text" v-model="monitors[i-1].api_link" v-on:keydown.enter="monitors[i-1].begin_reloading()" class="form-control" placeholder="API Link">
-                    <button class="btn btn-outline-danger" @click="delete_monitor(i-1)">delete</button>
+                    <input type="tel" v-model="monitors[i-1].delay" v-on:keydown.enter="monitors[i-1].begin_reloading()" class="form-control" placeholder="reload interval [second]">
+                    <span class="input-group-text"><i class="fas fa-sync" style="margin-right: 10px"></i> {{ monitors[i-1].last_reloaded_datetime }}</span>
+                    <button v-show="!(monitors[i-1].is_reload)" class="btn btn-outline-primary" @click="monitors[i-1].begin_reloading()" @touchstart="monitors[i-1].begin_reloading()" type="button"><i class="fas fa-play"></i></button>
+                    <button v-show="monitors[i-1].is_reload" class="btn btn-outline-secondary" @click="monitors[i-1].stop_reloading()" @touchstart="monitors[i-1].stop_reloading()" type="button"><i class="fas fa-stop"></i></button>
+                    <button class="btn btn-outline-danger" @click="delete_monitor(i-1)"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
         </div>
