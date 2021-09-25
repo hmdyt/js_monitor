@@ -96,7 +96,11 @@ export const Monitor = (props: MonitorProps) => {
                         </>
                     }
                 />
-                <CardMedia component="img" image={props.imageData} />
+                {props.imageData === "" ? (
+                    <CardMedia component="img" image="/virus_overshoot.png" />
+                ) : (
+                    <CardMedia component="img" image={props.imageData} />
+                )}
                 {props.isMinimalMode ? (
                     <></>
                 ) : (
