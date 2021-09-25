@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import { useState } from "react"
 // mui-core
 import IconButton from "@material-ui/core/IconButton"
-import { Grid, GridSize } from "@material-ui/core"
+import { Container, Grid, GridSize, Switch } from "@material-ui/core"
 // mui-icon
 import AddIcon from "@material-ui/icons/Add"
 // my components
@@ -30,9 +30,9 @@ const setArrayState = (
 
 const Display = () => {
     const [gridSize, setGridSize] = useState<GridSize>(6)
+    const [isMinimalMode, setIsMinimalMode] = useState<boolean>(false)
     const defaultStates = {
-        apiLink:
-            "https://sheltered-escarpment-27022.herokuapp.com/get_hist_data",
+        apiLink: "",
         imageData: "",
         isLoading: false,
         delay: 1,
@@ -114,14 +114,6 @@ const Display = () => {
 
     return (
         <>
-            {lastLoadTimes.map((a) => a)}
-            <br />
-            {String(lastLoadTimes.length)}
-            <br />
-            {isLoadings.map((a) => String(a))}
-            <br />
-            <br />
-            <br />
             <GridSelect
                 label="col"
                 value={gridSize}
@@ -131,12 +123,19 @@ const Display = () => {
             <IconButton onClick={addMonitor}>
                 <AddIcon />
             </IconButton>
+            <Switch
+                checked={isMinimalMode}
+                onChange={() =>
+                    setIsMinimalMode((isMinimalMode) => !isMinimalMode)
+                }
+            />
             <Grid container>
                 {[...Array(apiLinks.length)].map((_, i) => {
                     return (
                         <Monitor
                             key={i}
                             col={gridSize}
+                            isMinimalMode={isMinimalMode}
                             apiLink={apiLinks[i]}
                             imageData={imageDatas[i]}
                             isLoading={isLoadings[i]}
@@ -162,6 +161,10 @@ const Display = () => {
     )
 }
 
-const App = () => <Display />
+const App = () => (
+    <Container fixed>
+        <Display />
+    </Container>
+)
 
 ReactDOM.render(<App />, document.getElementById("root"))
