@@ -6,15 +6,16 @@ type startStopButtonProps = {
     startSomething: VoidFunction
     stopSomething: VoidFunction
     isProcessing: boolean
+    fontSize: "small" | "inherit" | "default" | "large" | "medium" | undefined
 }
 export const StartStopButton = (props: startStopButtonProps) => {
     return props.isProcessing ? (
         <IconButton onClick={props.stopSomething}>
-            <StopIcon />
+            <StopIcon fontSize={props.fontSize} />
         </IconButton>
     ) : (
         <IconButton onClick={props.startSomething}>
-            <PlayArrowIcon />
+            <PlayArrowIcon fontSize={props.fontSize} />
         </IconButton>
     )
 }

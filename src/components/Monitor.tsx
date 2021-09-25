@@ -10,12 +10,67 @@ import TextField from "@material-ui/core/TextField"
 import { GridSize } from "@material-ui/core"
 
 import DeleteIcon from "@material-ui/icons/Delete"
-//import CachedIcon from "@material-ui/icons/Cached"
+import CachedIcon from "@material-ui/icons/Cached"
 
 import { StartStopButton } from "./StartStopButton"
 
+type MonitorContentProps = {
+    apiLink: string
+    delay: number
+    isLoading: boolean
+    startLoading: () => void
+    stopLoading: () => void
+    handleApiLinkChange: (param: string) => void
+    handleDelayChange: (param: string) => void
+    handleDelete: () => void
+}
+
+const MonitorContents = (props: MonitorContentProps) => {
+    return (
+        <>
+            <CardContent>
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    type="text"
+                    variant="outlined"
+                    size="small"
+                    label="Link"
+                    value={props.apiLink}
+                    onChange={(event) =>
+                        props.handleApiLinkChange(event.target.value)
+                    }
+                />
+                <TextField
+                    fullWidth
+                    type="tel"
+                    variant="outlined"
+                    size="small"
+                    label="Delay [sec]"
+                    value={props.delay}
+                    onChange={(event) =>
+                        props.handleDelayChange(event.target.value)
+                    }
+                />
+            </CardContent>
+            <CardActions>
+                <StartStopButton
+                    startSomething={props.startLoading}
+                    stopSomething={props.stopLoading}
+                    isProcessing={props.isLoading}
+                    fontSize="small"
+                />
+                <IconButton onClick={props.handleDelete}>
+                    <DeleteIcon fontSize="small" />
+                </IconButton>
+            </CardActions>
+        </>
+    )
+}
+
 export type MonitorProps = {
     col: GridSize
+    isMinimalMode: boolean
     apiLink: string
     imageData: string
     isLoading: boolean
@@ -33,43 +88,29 @@ export const Monitor = (props: MonitorProps) => {
     return (
         <Grid item xs={props.col}>
             <Card>
-                <CardHeader subheader={props.lastLoadTime} />
+                <CardHeader
+                    subheader={
+                        <>
+                            <CachedIcon fontSize="small" />
+                            {props.lastLoadTime}
+                        </>
+                    }
+                />
                 <CardMedia component="img" image={props.imageData} />
-                <CardContent>
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        type="text"
-                        variant="outlined"
-                        size="small"
-                        label="link"
-                        value={props.apiLink}
-                        onChange={(event) =>
-                            props.handleLinkChange(event.target.value)
-                        }
+                {props.isMinimalMode ? (
+                    <></>
+                ) : (
+                    <MonitorContents
+                        apiLink={props.apiLink}
+                        delay={props.delay}
+                        isLoading={props.isLoading}
+                        startLoading={props.startLoading}
+                        stopLoading={props.stopLoading}
+                        handleApiLinkChange={props.handleLinkChange}
+                        handleDelayChange={props.handleDelayChange}
+                        handleDelete={props.handleDelete}
                     />
-                    <TextField
-                        fullWidth
-                        type="tel"
-                        variant="outlined"
-                        size="small"
-                        label="delay"
-                        value={props.delay}
-                        onChange={(event) =>
-                            props.handleDelayChange(event.target.value)
-                        }
-                    />
-                </CardContent>
-                <CardActions>
-                    <StartStopButton
-                        startSomething={props.startLoading}
-                        stopSomething={props.stopLoading}
-                        isProcessing={props.isLoading}
-                    />
-                    <IconButton onClick={props.handleDelete}>
-                        <DeleteIcon />
-                    </IconButton>
-                </CardActions>
+                )}
             </Card>
         </Grid>
     )
