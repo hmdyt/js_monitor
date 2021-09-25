@@ -3,12 +3,19 @@ import ReactDOM from "react-dom"
 import { useState } from "react"
 // mui-core
 import IconButton from "@material-ui/core/IconButton"
-import { Container, Grid, GridSize, Switch } from "@material-ui/core"
+import {
+    Container,
+    CssBaseline,
+    Grid,
+    GridSize,
+    Switch,
+} from "@material-ui/core"
 // mui-icon
 import AddIcon from "@material-ui/icons/Add"
 // my components
 import { Monitor } from "./components/Monitor"
 import { GridSelect } from "./components/GridSelect"
+import { MyHeader } from "./components/MyHeader"
 
 // define json structue
 type jsonData = {
@@ -29,7 +36,7 @@ const setArrayState = (
 }
 
 const Display = () => {
-    const [gridSize, setGridSize] = useState<GridSize>(6)
+    const [gridSize, setGridSize] = useState<GridSize>(4)
     const [isMinimalMode, setIsMinimalMode] = useState<boolean>(false)
     const defaultStates = {
         apiLink: "",
@@ -162,9 +169,16 @@ const Display = () => {
 }
 
 const App = () => (
-    <Container fixed>
-        <Display />
-    </Container>
+    <>
+        <CssBaseline />
+        <MyHeader
+            title="js_monitor"
+            githubLink="https://github.com/hmdyt/js_monitor/tree/react"
+        />
+        <Container fixed>
+            <Display />
+        </Container>
+    </>
 )
 
 ReactDOM.render(<App />, document.getElementById("root"))
